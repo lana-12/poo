@@ -25,8 +25,10 @@ class Autoloader
 
         if(file_exists($file)){
             require_once $file;
-        } else {
-            echo'oups';
+        } 
+        else {
+            //Rediriger vers la page d'accueil si le controller n'existe pas
+            header('Location: /');
             // die; // permet de ne rien afficher pour eviter les erreurs.
         }
 
