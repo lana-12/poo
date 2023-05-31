@@ -5,6 +5,9 @@ namespace App\Core;
 use App\Controllers\MainController;
 use App\Functions\Method;
 
+/**
+ * Router principal
+ */
 class Main 
 {
     public function start()
@@ -47,13 +50,13 @@ class Main
     $params = [];
     if(isset($_GET['p'])){
         $params = explode('/', $_GET['p']);
-        // Method::dump($params);
+        // Method::dump($params);die;
     }    
 
     //Verif si au moins 1 params
     if(isset($params[0]) != ""){
         // Method::dump($params);
-            // die;
+        //     die;
 
        //Démonter le array
 
@@ -75,7 +78,12 @@ class Main
         //Vérification si method existe
         if(method_exists($controller, $action)){
             // Verifier s'il reste des params on les passe à la method
-            (isset($params[0])) ? $controller->$action($params) : $controller->$action();
+
+            // 1 Méthode mais on passe un array donc ensuite il faudra loop sur array
+            // (isset($params[0])) ? $controller->$action($params) : $controller->$action();
+
+            // 2 Méthode mais on passe se que l'on a besoin, int, string...
+            (isset($params[0])) ? call_user_func_array([$controller, $action], $params) : $controller->$action();
         }else{
             http_response_code(404);
             echo "La page recherchée n'existe pas";

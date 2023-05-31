@@ -1,4 +1,20 @@
+<?php 
+$title = "Annonces";
+?>
+
 <p>Page d'accueil - Liste des Annonces</p>
 
-<?= var_dump($datas); ?>
+<?php 
+// var_dump($posts); 
 
+use App\Functions\Method;
+
+foreach($posts as $post) : ?>
+    <article>
+        <h2><?= $post->title ?></h2>
+        <p><?= Method::getWord($post->content, 20) ?><a href ="/?p=annonces/lire/<?= $post->id ?>">Lire la suite</a></p>
+        <p><?= Method::dateFormat($post->created_at);  ?></p>
+    </article>
+<?php endforeach; ?>
+
+<!-- 20:10 -->
