@@ -58,17 +58,16 @@ class Model extends Db
 /**
  * Create in BDD
  *
- * @param Model $model
  * @return void
  */
-    public function create(Model $model)
+    public function create()
     {
         $champs = [];
         $inter = [];
         $values = [];
 
         // Boucler pour éclater le array
-        foreach ($model as $key => $value) {
+        foreach ($this as $key => $value) {
             // INSERT INTO posts(title, content, active) VALUES (?,?,?)
             
             if($key !== null && $key !== 'db' && $key !== 'table' && $key !== 'created_at'){
@@ -91,13 +90,13 @@ class Model extends Db
         return $this->myQuery('INSERT INTO ' . $this->table . ' (' . $listKeys . ') VALUE ('. $listInter.')', $values);
     }
 
-    public function update(int $id, Model $model)
+    public function update(int $id)
     {
         $champs = [];
         $values = [];
 
         // Boucler pour éclater le array
-        foreach ($model as $key => $value) {
+        foreach ($this as $key => $value) {
             // UPDATE posts SET title = ? , content = ?, active = ? WHERE id = ?;
 
             if ($key !== null && $key !== 'db' && $key !== 'table' && $key !== 'created_at') {
@@ -105,6 +104,7 @@ class Model extends Db
                 $values[] = $value;
             }
         }
+
         $values[] = $id;
         // Method::dump($champs[0]);
         // Method::dump($values);
@@ -122,6 +122,7 @@ class Model extends Db
         return $this->myQuery('DELETE FROM '. $this->table . ' where id = ? ', [$id]);
     }
 
+    
     public function myQuery(string $sql, array $attributs=null)
     {
         //Récupérer l'instance de DB
@@ -141,7 +142,7 @@ class Model extends Db
         }
     }
 
-    public function hydrate(array $datas)
+    public function hydrate($datas)
     {
         foreach ($datas as $key => $value) {
             //Récupère le nom du setter correspondant à la clé

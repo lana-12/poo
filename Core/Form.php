@@ -36,6 +36,12 @@ class Form
         return true;
     }
 
+    public static function emailUnique($user, $email)
+    {
+        return $user->findBy(['email' => $email]) ? true : false ;
+    }
+
+
     /**
      * Add the attributes envoyés à la balise
      * @param array $attributes array associatif ['class'=> "form-control" , "required" => true]
@@ -73,7 +79,7 @@ class Form
      * @param array $attributes => Attributes
      * @return self
      */
-    public function startForm(string $method= 'post', string $action= '#', array $attributes= []): self
+    public function startForm(string $method= 'POST', string $action= '#', array $attributes= []): self
     {
         //Création de la balise <form....>
         $this->formCode .= "<form action='$action' method='$method'";
@@ -91,7 +97,13 @@ class Form
      */
     public function endForm(): self
     {
+        // Si on veut générer un token avec input hidden
+        $token = md5(uniqid());
+        $this->formCode .= "<input type='hidden' name='token' value='$token' ";
+
         $this->formCode .= '</form>';
+        $_SESSION['token'] = $token;
+        //Faire un dump()=> ds register ou login
         return $this;
     }
 

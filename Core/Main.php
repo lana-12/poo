@@ -12,6 +12,8 @@ class Main
 {
     public function start()
     {
+        //Démarrer la session => maintenant on y a access sur tout le site
+        session_start();
         // echo'C\'est ok';
 
         // https//mon-site.test/controller/method/parametres

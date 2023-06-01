@@ -30,8 +30,27 @@
                             <a class="nav-link" aria-current="page" href="/">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/?p=annonces/">Liste des Annonces</a>
+                            <a class="nav-link" href="/?p=annonces">Liste des Annonces</a>
                         </li>
+                    </ul>
+
+                    <ul class="navbar-nav ml-auto">
+
+                        <?php if(isset($_SESSION['user']) && !empty($_SESSION['user']['id']) ) : ?>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/?p=users/login/profil">Mon Espace</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/?p=users/logout">Déconnexion</a>
+                            </li>
+
+                        <?php else : ?>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/?p=users/login">Connexion</a>
+                            </li>
+
+                        <?php endif ?>
                     </ul>
 
                 </div>

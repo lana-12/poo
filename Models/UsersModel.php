@@ -7,7 +7,6 @@ class UsersModel extends Model
     protected int $id;
     protected string $email;
     protected string $password;
-    protected string $lastname;
     protected $created_at;
 
     public function __construct()
@@ -15,6 +14,31 @@ class UsersModel extends Model
 
         $class = str_replace(__NAMESPACE__ . '\\', '', __CLASS__);
         $this->table = strtolower(str_replace('Model', '',$class));
+    }
+
+    /**
+     * Récupérer User à partir du email
+     *
+     * @param string $email
+     * @return void
+     */
+    public function findOneByEmail(string $email)
+    {
+        return $this->myQuery('SELECT * FROM '.$this->table . ' WHERE email = ?', [$email])->fetch();
+    }
+
+    /**
+     * Create session user
+     *
+     * @return void
+     */
+    public function setSession()
+    {
+        $_SESSION['user'] =[
+            'id' => $this->id,
+            'email'=> $this->email
+        ];
+
     }
 
     /**
@@ -77,25 +101,6 @@ class UsersModel extends Model
         return $this;
     }
 
-    /**
-     * Get the value of lastname
-     */ 
-    public function getLastname()
-    {
-        return $this->lastname;
-    }
-
-    /**
-     * Set the value of lastname
-     *
-     * @return  self
-     */ 
-    public function setLastname($lastname)
-    {
-        $this->lastname = $lastname;
-
-        return $this;
-    }
 
     /**
      * Get the value of created_at

@@ -22,6 +22,7 @@ abstract class Controller
         // var_dump($annonces);
 
         // Démarrer le buffer de sortie => toute les données seront transmise à $content pour le mettre ds le "block content"
+        // "block content"
         ob_start();
 
         // A partir d'ici toute sortie est conservée en mémoire 
