@@ -1,8 +1,10 @@
 <?php 
 $title = "Annonces";
+
 ?>
 
-<p>Page d'accueil - Liste des Annonces</p>
+
+<h1>Liste des Annonces</h1>
 
 <?php 
 // var_dump($posts); 

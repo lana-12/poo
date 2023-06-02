@@ -36,7 +36,7 @@
 
                     <ul class="navbar-nav ml-auto">
 
-                        <?php if(isset($_SESSION['user']) && !empty($_SESSION['user']['id']) ) : ?>
+                        <?php if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) : ?>
 
                             <li class="nav-item">
                                 <a class="nav-link" href="/?p=users/login/profil">Mon Espace</a>
@@ -59,7 +59,29 @@
     </header>
 
     <main>
+
         <div class="container">
+            <?php if (!empty($_SESSION['error'])) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php echo $_SESSION['error'];
+                    unset($_SESSION['error']); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($_SESSION['success'])) : ?>
+                <div class="alert alert-success" role="alert">
+                    <?php echo $_SESSION['success'];
+                    unset($_SESSION['success']); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($_SESSION['errorFormat'])) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php echo $_SESSION['errorFormat'];
+                    unset($_SESSION['errorFormat']); ?>
+                </div>
+            <?php endif; ?>
+
             <?= $content ?>
         </div>
     </main>

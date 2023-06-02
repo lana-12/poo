@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Core\Form;
+use App\Core\Validate;
+use App\Functions\Method;
 use App\Models\PostsModel;
 
 
@@ -31,5 +34,162 @@ class AnnoncesController extends Controller
         $post = $postModel->find($id);
 
         $this->render('annonces/lire', compact('post'));
+    }
+
+    public function ajouter()
+    {
+        //Vérification si connecté
+        if(isset($_SESSION['user']) && !empty($_SESSION['user']['id'])){
+            //User est connecté
+
+            //Traiter le form
+            //Vérification si champ pas vide
+            if(Validate::validate($_POST, ['title', 'content'])){
+                //Form est complet
+                //Protection contre faille XSS
+                //strip_tags, htmlentities, htmlspecialchar
+                $title = strip_tags($_POST['title']);
+                $content = strip_tags($_POST['content']);
+            
+                //Instancie notre objet
+                $post = new PostsModel();
+                // Hydratation
+                $post
+                    ->setTitle($title)
+                    ->setContent($content)
+                    ->setUser_id($_SESSION['user']['id'])
+                    ->setActive(false);
+
+                $post->create();
+
+                //Redirection + message
+                $_SESSION['success'] = 'Votre annonce a été enregistrée avec succès';
+                header('Location: /');
+                exit;
+
+            } else{
+                //Formulaire est incomplet
+                // Si manque un champ et envoyer => message error mais les données saisies sont tjs là
+                $_SESSION['error'] = !empty($_POST) ? 'Le formulaire est incomplet' : '';
+                $title = isset($_POST['title']) ? strip_tags($_POST['title']) : '';
+                $content = isset($_POST['content']) ? strip_tags($_POST['content']) : '';
+
+            }
+        
+
+            //Create form add post
+            $form = new Form;
+            $form
+                ->startForm()
+                ->addLabelFor('title', 'Titre :')
+                ->addInput('text', 'title', [
+                    'id'=> 'title', 
+                    'class'=> 'form-control',
+                    'value' => $title
+                ])
+
+                ->addLabelFor('content', 'Description :')
+                ->addTextArea('content', $content , [
+                    'id'=> 'content', 
+                    'class'=> 'form-control'
+                ])
+
+                ->addButton('submit', 'Enregistrer', ['class'=> 'btn btn-primary'])
+
+                ->endForm();    
+
+            // Method::dump($form);
+            $this->render('annonces/ajouter', ['addPostForm'=> $form->create()]);
+
+        } else {
+            //User pas connecté
+            $_SESSION['error'] = 'Vous devez être connecté(e) pour accéder à cette page';
+            header('Location: /?p=users/login');
+            exit;
+        }
+    }
+
+    public function modifier(int $id)
+    {
+        // echo 'modifier';
+        //Vérification si connecté
+        if(isset($_SESSION['user']) && !empty($_SESSION['user']['id'])){
+
+            //Verifier si annonce existe
+            $postsModel = new PostsModel();
+
+            //Récupère id
+            $post = $postsModel->find($id);
+
+            //Verification Si annonce n'existe pas + redirection liste annonce
+            if(!$post){
+                http_response_code(404);
+                $_SESSION['error'] = 'L\'annonce recherchée n\'existe pas';
+                header('Location: /?p=annonces');
+                exit;
+            }
+
+            //Vérification si user est propriétaire de l'annonce
+            if($post->users_id !== $_SESSION['user']['id']){
+                $_SESSION['error'] = 'Vous n\'avez pas accès à cette page';
+                header('Location: /?p=annonces');
+                exit;
+            }
+            //Traite le formulaire ici
+            if(Validate::validate($_POST, ['title', 'content'])){
+                //Protection des failles xss
+                $title = strip_tags($_POST['title']);
+                $content = strip_tags($_POST['content']);
+
+                //Stocker l'annonce
+                $postModif = new PostsModel();
+                $postModif
+                    ->setId($post->id)
+                    ->setTitle($title)
+                    ->setContent($content)
+                ;
+                $postModif->update($post->id);
+
+                //Redirection + message
+                $_SESSION['success'] = 'Votre annonce a été modifiée avec succès';
+                header('Location: /?p=annonces/lire/'.$post->id);
+                exit;
+            }
+
+
+            $form = new Form;
+            $form
+                ->startForm()
+                ->addLabelFor('title', 'Titre :')
+                ->addInput('text', 'title', [
+                    'id' => 'title', 
+                    'class' => 'form-control',
+                    'value' => $post->title
+                ])
+
+                ->addLabelFor('content', 'Description :')
+                ->addTextArea('content', $post->content, [
+                    'id' => 'content', 
+                    'class' => 'form-control'
+                ])
+
+                ->addButton('submit', 'Modifier', ['class' => 'btn btn-primary'])
+
+                ->endForm();
+            
+            $this->render('annonces/modifier', ['updatePostForm' => $form->create()]);
+
+        } else {
+            //User pas connecté
+            $_SESSION['error'] = 'Vous devez être connecté(e) pour accéder à cette page';
+            header('Location: /?p=users/login');
+            exit;
+        }
+    }
+
+
+    public function delete(int $id)
+    {
+        
     }
 }

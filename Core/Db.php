@@ -37,10 +37,22 @@ class Db extends PDO
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    
 
         } catch(PDOException $e){
-            die($e->getMessage());
+            $e = sprintf("[%s] : %s ligne %s", $e->getMessage(), $e->getFile(), $e->getLine()) . PHP_EOL;
+            // $this->createlogger('Error : ' . $e);
+            echo 'Oups !!! Une erreur est survenue';
+            die();
         }
     
     }
+
+    // private function createlogger(string $message): void
+    // {
+    //     if (!is_dir('App/Core/Logger')) {
+    //         mkdir('App/Core/Logger', 0777, true);
+    //     }
+    //     file_put_contents('App/Core/Logger/' . date('Y-d-m') . '.log', $message . PHP_EOL, FILE_APPEND);
+    // }
+    
 
     // Méthode qui vérifie si une instance existe sinon il l'a crée 
     // On peut mettre :PDO, SELF, DB

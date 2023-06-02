@@ -11,6 +11,8 @@ class PostsModel extends Model
     protected string $content;
     protected $created_at;
     protected bool $active;
+    protected int $users_id;
+
     
     public function __construct()
     {
@@ -117,5 +119,26 @@ class PostsModel extends Model
 
         return $this;
     }
+
+    /**
+     * Get the value of users_id
+     */
+    public function getUsers_id(): int
+    {
+        return $this->users_id;
+    }
+
+    /**
+     * Set the value of users_id
+     *
+     * @return  self
+     */
+    public function setUser_id(int $users_id)
+    {
+        $this->users_id = $users_id;
+
+        return $this;
+    }
+
 }
 

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Core\Form;
+use App\Core\Validate;
 use App\Functions\Method;
 use App\Models\Model;
 use App\Models\UsersModel;
@@ -17,7 +18,7 @@ class UsersController extends Controller
     public function login()
     {
         //Vérification si form est complet
-        if(Form::validate($_POST, ['email', 'password'])){
+        if(Validate::validate($_POST, ['email', 'password'])){
             //Form est vérifié
             //Récupérer le user avec son email
             $usersModel = new UsersModel();
@@ -54,12 +55,20 @@ class UsersController extends Controller
         $form
             ->startForm()
             ->addLabelFor('email', 'E-mail :')
-            ->addInput('email', 'email', ['id'=>'email', 'class'=> 'form-control'])
+            ->addInput('email', 'email', [
+                'id'=>'email', 
+                'class'=> 'form-control'
+            ])
 
             ->addLabelFor('password', 'Mot de passe :')
-            ->addInput('password', 'password', ['id'=> 'password', 'class'=> 'form-control'])
+            ->addInput('password', 'password', [
+                'id'=> 'password', 
+                'class'=> 'form-control'
+            ])
 
-            ->addButton('submit','Me connecter', ['class'=> 'btn btn-primary'])
+            ->addButton('submit','Me connecter', [
+                'class'=> 'btn btn-primary'
+            ])
             ->endForm();
 
             // var_dump($form); // voir dans la console
@@ -80,34 +89,37 @@ class UsersController extends Controller
 
         
         //Vérification si formulaire est valide
-        if(Form::validate($_POST, ['email', 'password'])){
+        if(Validate::validate($_POST, ['email', 'password'])){
             //echo 'valide'; // Le form est valide
 
             //Nettoyer email
             $email = strip_tags($_POST['email']);
 
-            //Verifier si email existe + format
-
-
-
-            //Verifier si MDP a bien le format
+            // Method::dump(strlen($_POST['password']));
+            //Verifier si MDP a le bon le format
+            if(!Validate::isValidMDP($_POST['password']) ){
+                $_SESSION['error'] = 'Votre Mot de Passe est incorrect. Il doit être composé au moins 8 caractères, au moins 1 lettre en Majuscule et minuscule, au moins 1 chiffre et un caractère spécial';
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit;
+            }
 
             //Crypter le MDP
-            $pass= password_hash($_POST['password'], PASSWORD_BCRYPT);
-
+            $pass = password_hash($_POST['password'], PASSWORD_BCRYPT);
             // echo $pass;
-            
+
             //Hydrater objet
             $user = new UsersModel();
-
-            if(Form::emailUnique($user, $email)){
+            
+            //Verifier si email existe
+            if(Validate::emailUnique($user, $email)){
                 // E-mail existe
                 // Method::dump('existeeeee');
                 $_SESSION['error'] = 'Cet email existe déjà, Veuillez saisir un autre e-mail';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit;
             }
-        
+            
+            //Verifier le format de email
             if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                     // Method::dump('errorFormat');
 
@@ -136,12 +148,21 @@ class UsersController extends Controller
         $form
             ->startForm()
             ->addLabelFor('email', 'Email :')
-            ->addInput('email', 'email', ['id'=>'email', 'class'=>'form-control'])
+            ->addInput('email', 'email', [
+                'id'=>'email', 
+                'class'=>'form-control'
+            ])
 
             ->addLabelFor('password', 'Mot de passe :')
-            ->addInput('password', 'password', ['id'=>'password', 'class'=>'form-control'])
+            ->addInput('password', 'password', [
+                'id'=>'password', 
+                'class'=>'form-control'
+            ])
 
-            ->addButton('submit', 'M\'inscrire', ['class' => 'btn btn-primary'])
+            ->addButton('submit', 'M\'inscrire', [
+                'class' => 'btn btn-primary'
+            ])
+
             ->endForm();
 
 // Method::dump($form);
@@ -166,8 +187,7 @@ class UsersController extends Controller
 
         // Soit user reste sur la même page
             header("Location: ".$_SERVER['HTTP_REFERER']);
-            
-        exit;
+            exit;
         }
     }
 }

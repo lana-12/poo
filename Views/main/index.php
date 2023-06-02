@@ -1,3 +1,6 @@
-<p>Page d'accueil du site</p>
+<?php
+$title = 'Accueil';
 
+?>
 
+<h1>Page d'Accueil</h1>

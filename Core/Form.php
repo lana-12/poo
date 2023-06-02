@@ -17,32 +17,6 @@ class Form
     }
 
     /**
-     * Validation si tous les champs du form sont remplis
-     *
-     * @param array $form array issu du form($_GET ou $_POST)
-     * @param array $champs array listant des champs obligatoire
-     * @return bool
-     */
-    public static function validate(array $form, array $champs): bool
-    {
-        // Parcourir les champs avec foreach
-        foreach($champs as $champ){
-            //Verification si absent ou vide
-            if(!isset($form[$champ]) || empty($form[$champ])){
-                //On sort en return FALSE
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static function emailUnique($user, $email)
-    {
-        return $user->findBy(['email' => $email]) ? true : false ;
-    }
-
-
-    /**
      * Add the attributes envoyés à la balise
      * @param array $attributes array associatif ['class'=> "form-control" , "required" => true]
      * @return string string générée
@@ -64,7 +38,7 @@ class Form
                 $str .= " $attribute";
             }else{
                 // Add attribute='Valeur'
-                $str .= " $attribute='$valeur'";
+                $str .= " $attribute=\"$valeur\"";
             }
         }
 
@@ -189,7 +163,7 @@ class Form
 
         //Add options
         foreach($options as $value => $text){
-            $this->formCode .= "<option value='$value'>$text</option>";
+            $this->formCode .= "<option value=\"$value\">$text</option>";
         }
 
         // Ferme le select
