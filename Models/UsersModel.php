@@ -8,6 +8,7 @@ class UsersModel extends Model
     protected string $email;
     protected string $password;
     protected $created_at;
+    protected $roles;
 
     public function __construct()
     {
@@ -36,7 +37,8 @@ class UsersModel extends Model
     {
         $_SESSION['user'] =[
             'id' => $this->id,
-            'email'=> $this->email
+            'email'=> $this->email,
+            'roles'=> $this->roles
         ];
 
     }
@@ -122,5 +124,30 @@ class UsersModel extends Model
         return $this;
     }
 
+
+    /**
+     * Get the value of roles
+     */ 
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        //Si user n'a pas de role meme si ds la BDD = null
+        $roles[]= 'ROLE_USER';
+
+        return array_unique($roles);
+    
+    }
+
+    /**
+     * Set the value of roles
+     *
+     * @return  self
+     */ 
+    public function setRoles($roles): self
+    {
+        $this->roles = json_decode($roles);
+
+        return $this;
+    }
 }
 

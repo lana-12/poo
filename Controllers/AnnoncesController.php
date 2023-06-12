@@ -129,11 +129,13 @@ class AnnoncesController extends Controller
                 exit;
             }
 
-            //Vérification si user est propriétaire de l'annonce
-            if($post->users_id !== $_SESSION['user']['id']){
-                $_SESSION['error'] = 'Vous n\'avez pas accès à cette page';
-                header('Location: /?p=annonces');
-                exit;
+            //Vérification si user est propriétaire de l'annonce et donner accès à Admin
+            if($post->users_id !== $_SESSION['user']['id'] ){
+                if(!in_array("ROLE_ADMIN", $_SESSION['user']['roles'])) {
+                    $_SESSION['error'] = 'Vous n\'avez pas accès à cette page';
+                    header('Location: /?p=annonces');
+                    exit;
+                }
             }
             //Traite le formulaire ici
             if(Validate::validate($_POST, ['title', 'content'])){
@@ -187,9 +189,4 @@ class AnnoncesController extends Controller
         }
     }
 
-
-    public function delete(int $id)
-    {
-        
-    }
 }

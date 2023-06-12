@@ -19,4 +19,3 @@ foreach($posts as $post) : ?>
     </article>
 <?php endforeach; ?>
 
-<!-- 20:10 -->

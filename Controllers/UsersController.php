@@ -100,7 +100,7 @@ class UsersController extends Controller
             if(!Validate::isValidMDP($_POST['password']) ){
                 $_SESSION['error'] = 'Votre Mot de Passe est incorrect. Il doit être composé au moins 8 caractères, au moins 1 lettre en Majuscule et minuscule, au moins 1 chiffre et un caractère spécial';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
-                exit;
+                
             }
 
             //Crypter le MDP
@@ -109,7 +109,8 @@ class UsersController extends Controller
 
             //Hydrater objet
             $user = new UsersModel();
-            
+            // $user->setRoles('ROLE_USER');
+
             //Verifier si email existe
             if(Validate::emailUnique($user, $email)){
                 // E-mail existe

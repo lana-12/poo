@@ -18,7 +18,7 @@
 <body>
     <header>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">POO</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,7 +27,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/">Accueil</a>
+                            <a class="nav-link" aria-current="page" href="/">Accueil du site</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/?p=admin">Accueil de l'Admin</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/?p=annonces">Liste des Annonces</a>
@@ -37,12 +40,6 @@
                     <ul class="navbar-nav ml-auto">
 
                         <?php if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) : ?>
-                            <?php if (isset($_SESSION['user']['roles']) && in_array("ROLE_ADMIN", $_SESSION['user']['roles'])) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/?p=admin">Admin</a>
-                                </li>
-                            <?php endif ?>
-
 
                             <li class="nav-item">
                                 <a class="nav-link" href="/?p=users/login/profil">Mon Espace</a>
@@ -107,7 +104,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
-    <script src="../js/script.js"></script>
 </body>
 
 </html>

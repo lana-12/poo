@@ -9,3 +9,5 @@ RewriteRule ^([a-zA-Z0-9\-\_\/]*)$ index.php?p=$1
 # # RewriteCond %{REQUEST_FILENAME} !-f
 # # RewriteRule (.*) index.php/$1 [L]
 
+
+RewriteRule     ^js_([A-Za-z0-9\.\_\-]{1,50})\.php$  public/js/$1.js
