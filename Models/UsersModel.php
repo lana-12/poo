@@ -9,6 +9,7 @@ class UsersModel extends Model
     protected string $password;
     protected $created_at;
     protected $roles;
+    protected $likes;
 
     public function __construct()
     {
@@ -146,6 +147,26 @@ class UsersModel extends Model
     public function setRoles($roles): self
     {
         $this->roles = json_decode($roles);
+
+        return $this;
+    }
+
+    /**
+     * Get the value of likes
+     */ 
+    public function getLikes()
+    {
+        return $this->likes;
+    }
+
+    /**
+     * Set the value of likes
+     *
+     * @return  self
+     */ 
+    public function setLikes($likes)
+    {
+        $this->likes = $likes;
 
         return $this;
     }

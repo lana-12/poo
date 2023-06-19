@@ -11,7 +11,11 @@ class PostsModel extends Model
     protected string $content;
     protected $created_at;
     protected bool $active;
-    protected int $users_id;
+    protected $users_id;
+    protected $likes;
+    protected $like_count;
+    protected $dislike_count;
+
 
     
     public function __construct()
@@ -140,5 +144,65 @@ class PostsModel extends Model
         return $this;
     }
 
+
+    /**
+     * Get the value of likes
+     */ 
+    public function getLikes()
+    {
+        return $this->likes;
+    }
+
+    /**
+     * Set the value of likes
+     *
+     * @return  self
+     */ 
+    public function setLikes($likes)
+    {
+        $this->likes = $likes;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of likeCount
+     */ 
+    public function getLikeCount()
+    {
+        return $this->like_count;
+    }
+
+    /**
+     * Set the value of likeCount
+     *
+     * @return  self
+     */ 
+    public function setLikeCount($like_count)
+    {
+        $this->like_count = $like_count;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of dislikeCount
+     */ 
+    public function getDislikeCount()
+    {
+        return $this->dislike_count;
+    }
+
+    /**
+     * Set the value of dislikeCount
+     *
+     * @return  self
+     */ 
+    public function setDislikeCount($dislike_count)
+    {
+        $this->dislike_count = $dislike_count;
+
+        return $this;
+    }
 }
 

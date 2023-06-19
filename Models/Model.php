@@ -55,6 +55,16 @@ class Model extends Db
         return $this->myQuery("SELECT * FROM {$this->table} WHERE id = $id")->fetch();
     }
 
+    // public function count($likes)
+    // {
+    //     $query = $this->myQuery('SELECT COUNT('.$likes.') FROM ' . $this->table);
+    //     return $query->fetchAll();
+    // }
+
+    // public function test()
+    // {
+    //     $query = $this->myQuery('SELECT * FROM ')
+    // }
 /**
  * Create in BDD
  *
@@ -158,3 +168,4 @@ class Model extends Db
         return $this;
     }
 }
+

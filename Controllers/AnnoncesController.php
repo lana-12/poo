@@ -6,6 +6,7 @@ use App\Core\Form;
 use App\Core\Validate;
 use App\Functions\Method;
 use App\Models\PostsModel;
+use App\Models\PostLikesModel;
 
 
 class AnnoncesController extends Controller
@@ -15,6 +16,11 @@ class AnnoncesController extends Controller
         $postsModel = new PostsModel();
         $posts = $postsModel->findBy(['active' => 1]);
         // var_dump($posts);
+
+        
+        $likeModel = new PostLikesModel();
+        
+        // $likes = $postModel->count();
 
         // 1 méthode
         // include_once ROOT.'/Views/annonces/index.php';
